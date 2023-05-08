@@ -1,0 +1,40 @@
+</div>
+<!-- ============================================================== -->
+<!-- end main wrapper  -->
+<!-- ============================================================== -->
+
+<script src="vendor/jquery/jquery-3.3.1.min.js"></script>
+<!-- bootstap bundle js -->
+<script src="vendor/bootstrap/js/bootstrap.bundle.js"></script>
+<!-- sweet alert js -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!-- dropzone-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/min/dropzone.min.js"></script>
+<!-- datatable-->
+<script src="https://cdn.datatables.net/v/bs4/jq-3.3.1/dt-1.10.23/datatables.min.js"></script>
+<!-- slimscroll js -->
+<script src="vendor/slimscroll/jquery.slimscroll.js"></script>
+<!-- datepicker -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<!-- main js -->
+<script src="libs/js/main-js.js"></script>
+
+<% if(site_path === '/convert') { %> <script src="libs/js/convert.js"></script> <% } %>
+
+<% if(site_path === '/mail') { %> <script src="libs/js/mail.js"></script> <% } %>
+
+<% if(site_path.indexOf('/user') > -1) { %> <script src="libs/js/user.js"></script> <% } %>
+
+<% if(site_path === '/sql') { %> <script src="libs/js/sql.js"></script> <% } %>
+
+<% if(site_path === '/gameinfo') { %> <script src="libs/js/gameinfo.js"></script> <% } %>
+
+<% if(site_path === '/const') { %> <script src="libs/js/const.js"></script> <% } %>
+
+
+<!-- select2, selectbox search -->
+<script src="vendor/select2/js/select2.min.js"></script>
+
+</body>
+
+</html>
