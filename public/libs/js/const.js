@@ -4,30 +4,82 @@ Dropzone.autoDiscover = false;
 $(document).ready(function () {
 
     $('#tableUploader1').hide();
-    printTableList($('#selected_table_name').val(), $('#table_list').val());
+
+    printCategoryList($('#selected_category_name').val(), $('#category_list').val());
+    //printTableList($('#selected_table_name').val(), $('#table_list').val());
 
     $('.nav-link').click(function () {
         var tabId = this.id.split('-')[0];
         $('#tabId').val(tabId);
         if (tabId === 'check') {
             $('#tableUploader1').hide();
+            $('#categorySearch').show();
             $('#tableSearch1').show();
             $('#constTableList').show();
-            printTableList($('#selected_table_name').val(), $('#table_list').val());
+
+            printCategoryList($('#selected_category_name').val(), $('#category_list').val());
+            //printTableList($('#selected_table_name').val(), $('#table_list').val());
         } else {
+            $('#categorySearch').hide();
             $('#tableSearch1').hide();
             $('#constTableList').hide();
             $('#tableUploader1').show();
         }
     });
 
+    $('#categorySearch').click(function () {
+        printCategoryList($('#const_select_category').val(), $('#category_list').val());
+    });
+
     $('#tableSearch').click(function () {
         printTableList($('#const_select_table').val(), $('#table_list').val());
     });
 
+    var category;
     var table;
 
-    function printTableList(selected_table_name, table_list) {
+    function printCategoryList(selected_category_name, category_list) {
+        $('#const_select_category option').remove();
+        $('#const_select_table option').remove();
+        
+        category_list = JSON.parse(category_list);
+        console.log("!!!!!!!!!!!!!!!!!!!!"); console.log(category_list);
+
+        let selectedCategoryName = [];
+        for (var i = 0; i < category_list.length; i++) {
+            if (category_list[i][0] === selected_category_name) {
+                selectedCategoryName = category_list[i][0];
+            }
+            $("#const_select_category").append(new Option(selectedCategoryName, selectedCategoryName));
+        }
+
+        $("#const_select_category").val(selected_category_name).attr("selected", "selected");
+
+        $("#const_select_category").select2({
+            theme: 'bootstrap4',
+        });
+    }
+
+    if ($('#tableSearch').length > 0) {
+        $.ajax({
+            url: '/const/listTables',
+            type: 'post',
+            data: {
+                "category": selected_category_name
+            },
+            success: function (data) {
+                swal('실행 완료', '', 'success').then(function () {
+                    printTableList(data, '');
+                });
+            },
+            error: function () {
+                swal('error', 'something wrong..', 'error');
+            },
+        });
+
+    }
+
+    function printTableList(table_list, selected_table_name) {
         $('#const_select_table option').remove();
 
         table_list = JSON.parse(table_list);
@@ -38,6 +90,11 @@ $(document).ready(function () {
                 selectedData = table_list[i];
             }
             $("#const_select_table").append(new Option(table_list[i].sheetName, table_list[i].sheetName));
+        }
+
+        if (selectedData.length === 0) {
+            selected_table_name = table_list[0].sheetName;
+            selectedData = table_list[0];
         }
 
         $("#const_select_table").val(selected_table_name).attr("selected", "selected");
@@ -86,9 +143,9 @@ $(document).ready(function () {
             type: 'get',
             data: {
             },
-            success: function () {
+            success: function (data) {
                 swal('실행 완료', '', 'success').then(function () {
-                    printCompareTableData($('#compare_table_list').val());
+                    printCompareTableData(data, $('#compare_table_list').val());
                 });
             },
             error: function () {
@@ -97,8 +154,15 @@ $(document).ready(function () {
         });
     }
 
-    function printCompareTableData(selected_table_name, table_list) {
-        table_list = JSON.parse(table_list);
+    function printCompareTableData(data, table_list) {
+        data = JSON.parse(data);
+
+        let added = data['added'];
+        let deleted = data['deleted'];
+        let changed = data['changed'];
+
+        let changedHeader = changed;
+
     }
 });
 

@@ -6,7 +6,7 @@ module.exports = (app) => {
     app.use('/const', router);
 };
 
-router.get('/', ConstController.getTableList);
+router.get('/', ConstController.getCategoryList);
 router.get('/compareTables', ConstController.compareTableList);
-router.post('/list', ConstController.getTableList);
+router.post('/listTables', ConstController.getTableList);
 

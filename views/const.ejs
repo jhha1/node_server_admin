@@ -3,8 +3,8 @@
 
 <div class="dashboard-wrapper">
     <input type="hidden" name="" id="envValue" value="<%=serverEnv%>">
-    <input type="hidden" name="" id="selected_table_name" value="Item">
-    <input type="hidden" name="" id="table_list" value="<%=tableList%>">
+    <input type="hidden" name="" id="selected_category_name" value="item">
+    <input type="hidden" name="" id="category_list" value="<%=categoryList%>">
 
     <div class="container-fluid dashboard-content">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -15,7 +15,7 @@
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <%
                             var tab_list = [
-                                {id:"check", name:'서버 데이터 확인 (S3)'},
+                                {id:"check", name:'서버 데이터 (S3)'},
                                 {id:'upload', name:'데이터 업로드'}
                             ];
                             tab_list.forEach((tab) => { %>
@@ -40,9 +40,23 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div id="categorySearch" class="card">
+                                    <div class="card-header">
+                                        카테고리 리스트
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="input-group">
+                                            <select name="const_select_category" id="const_select_category"></select>
+                                            <input type="hidden" name="" id="category_list" value="<%=categoryList%>">
+                                            <div class="input-group-append ml-2">
+                                                <button id="categorySearch" type="button" class="form-control btn-primary">검색</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div id="tableSearch1" class="card">
                                     <div class="card-header">
-                                        테이블 선택
+                                        테이블 리스트
                                     </div>
                                     <div class="card-body">
                                         <div class="input-group">
