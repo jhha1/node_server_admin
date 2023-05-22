@@ -1,11 +1,11 @@
 
-Dropzone.autoDiscover = false;
+//Dropzone.autoDiscover = false;
 
 $(document).ready(function () {
 
     $('#tableUploader1').hide();
 
-    printCategoryList($('#selected_category_name').val(), $('#category_list').val());
+    //printCategoryList($('#selected_category_name').val(), $('#category_list').val());
     //printTableList($('#selected_table_name').val(), $('#table_list').val());
 
     $('.nav-link').click(function () {
@@ -137,7 +137,7 @@ $(document).ready(function () {
         });
     }
 
-    if ($('#tableUploader').length > 0) {
+   /* if ($('#tableUploader').length > 0) {
         $.ajax({
             url: '/const/compareTables',
             type: 'get',
@@ -152,7 +152,7 @@ $(document).ready(function () {
                 swal('error', 'something wrong..', 'error');
             },
         });
-    }
+    }*/
 
     function printCompareTableData(data, table_list) {
         data = JSON.parse(data);
@@ -164,6 +164,24 @@ $(document).ready(function () {
         let changedHeader = changed;
 
     }
+
+    $('#tableUpload').click(function () {
+        $.ajax({
+            url: '/const/upload',
+            type: 'get',
+            data: {
+                env: $('#envValue').val(),
+            },
+            success: function () {
+                swal('실행 완료', '', 'success').then(function () {
+                    ;
+                });
+            },
+            error: function () {
+                swal('error', 'something wrong..', 'error');
+            },
+        });
+    });
 });
 
 /*

@@ -1,5 +1,5 @@
 const db = require('../database/db');
-const UserQueries = require('../queries/user-query');
+const axios = require('axios');
 const googleApi = require('../database/google/googleApi');
 const s3 = require('../database/aws/s3').s3;
 const zip = require('../utils/zip');
@@ -32,6 +32,56 @@ class ConstService {
         let GoogleSheetObj = new googleApi.GoogleSheet(sheetId);
         let googleSheetTableList = await GoogleSheetObj.readSheetAll();
         return googleSheetTableList;
+    }
+
+    async uploadEc2(googleSheetList) {
+        const data = {
+            new_tables: googleSheetList
+        };
+          
+        const options = {
+        // 요청 설정
+        url: 'http://127.0.0.1:8886/const/refleshTables', // 요청을 보낼 URL
+        method: 'POST', // HTTP 메서드
+        headers: {
+            'Content-Type': 'application/json' // 요청 헤더 설정 (JSON 형식으로 전송할 경우)
+        },
+        data: JSON.stringify(data) // 데이터를 JSON 문자열로 변환
+        };
+        
+        await axios(options)
+        .then((response) => {
+            // 응답을 받았을 때의 처리
+            console.log(response.data);
+        })
+        .catch((error) => {
+            // 에러 처리
+            console.error(error);
+        });
+
+        await this.getLatestEc2Const();
+    }
+
+    async getLatestEc2Const() {
+        const options = {
+            // 요청 설정
+            url: 'http://127.0.0.1:8886/const/listTables', // 요청을 보낼 URL
+            method: 'POST', // HTTP 메서드
+            headers: {
+                'Content-Type': 'application/json' // 요청 헤더 설정 (JSON 형식으로 전송할 경우)
+            },
+            data: {}
+            };
+            
+            await axios(options)
+            .then((response) => {
+                // 응답을 받았을 때의 처리
+                console.log(response.data);
+            })
+            .catch((error) => {
+                // 에러 처리
+                console.error(error);
+            });
     }
 
     async compareTableList(s3SheetList, googleSheetList) {
@@ -165,6 +215,18 @@ exports.getConstTableList = async function(id) {
 
         return tableHeaderAndValues;
     } catch (err) {
+        throw err;
+    }
+}
+
+exports.uploadEc2 =  async function() {
+    try {
+        let ConstServiceObject = new ConstService();
+        const googleSheetList = await ConstServiceObject.getLatestGoogleConst();
+        const results = await ConstServiceObject.uploadEc2(googleSheetList);
+        return results;
+    }
+    catch (err) {
         throw err;
     }
 }

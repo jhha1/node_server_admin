@@ -9,4 +9,5 @@ module.exports = (app) => {
 router.get('/', ConstController.getCategoryList);
 router.get('/compareTables', ConstController.compareTableList);
 router.post('/listTables', ConstController.getTableList);
+router.get('/upload', ConstController.upload);
 
